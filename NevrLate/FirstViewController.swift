@@ -33,8 +33,8 @@ class FirstViewController: UIViewController, MKMapViewDelegate
     // When changed
     @IBAction func originFieldChanged(_ textField: UITextField){
         originText = textField.text!
-        getOriginCoordLat() // Set origin coord for latitude
-        getOriginCoordLon() // Set origin coord for longitude
+        getOriginCoord() // Set origin coords
+        
         
         /* Debugging status messages */
         //print("\(lat1)")
@@ -46,52 +46,16 @@ class FirstViewController: UIViewController, MKMapViewDelegate
     // When changed
     @IBAction func destinationFieldChanged(_ textField: UITextField){
         destinationText = textField.text!
-        getDestinationCoordLat() // Set destination coord for lat
-        getDestinationCoordLon() // Set destination coord for lon
+        getDestinationCoord() // Set destination coords
+        
         
         /* Debugging status messages */
         //print("\(lat2)")
         //print("\(lon2)")
     }
     
-    // Function to set Destination Lat Coord
-    func getDestinationCoordLat() {
-        
-        let geocoder = CLGeocoder() // Declare geocoder
-        
-        // Convert destination text to geolocation
-        geocoder.geocodeAddressString(destinationText) {
-            placemarks, error in
-            let placemark = placemarks?.first
-            
-            // Set Destination latitude
-            self.lat1 = (placemark?.location?.coordinate.latitude)!
-            
-            // Debug Message
-            //print("1")
-            }
-    }
-    
-    // Function to set Destination Lon Coord
-    func getDestinationCoordLon() {
-        
-        let geocoder = CLGeocoder() // Declare geocoder
-        
-        // Convert destination text to geolocation
-        geocoder.geocodeAddressString(destinationText) {
-            placemarks, error in
-            let placemark = placemarks?.first
-            
-            // Set Destination latitude
-            self.lon1 = (placemark?.location?.coordinate.longitude)!
-            
-            // Debug Message
-            //print("2")
-        }
-    }
-    
-    // Function to set Origin Lat Coord
-    func getOriginCoordLat() {
+    // Function to set Origin Coords
+    func getOriginCoord() {
         
         let geocoder = CLGeocoder() // Declare geocoder
         
@@ -102,39 +66,37 @@ class FirstViewController: UIViewController, MKMapViewDelegate
             
             // Set Destination latitude
             self.lat2 = (placemark?.location?.coordinate.latitude)!
+            self.lon2 = (placemark?.location?.coordinate.longitude)!
             
             // Debug Message
             //print("3")
         }
     }
     
-    // Function to set Origin Lon Coord
-    func getOriginCoordLon() {
+    // Function to set Destination Coords
+    func getDestinationCoord() {
         
         let geocoder = CLGeocoder() // Declare geocoder
         
         // Convert destination text to geolocation
-        geocoder.geocodeAddressString(originText) {
+        geocoder.geocodeAddressString(destinationText) {
             placemarks, error in
             let placemark = placemarks?.first
             
             // Set Destination latitude
-            self.lon2 = (placemark?.location?.coordinate.longitude)!
+            self.lat1 = (placemark?.location?.coordinate.latitude)!
+            self.lon1 = (placemark?.location?.coordinate.longitude)!
             
             // Debug Message
-            //print("4")
+            //print("1")
         }
     }
 
-    
     @IBAction func getDirections(_ sender: UIButton){
         /* Debug Messages */
         //print("\(lat1)")
-        //print("W")
         //print("\(lon1)")
-        //print("X")
         //print("\(lat2)")
-        //print("Y")
         //print("\(lon2)")
         //print("Z")
         

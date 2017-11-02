@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import EventKit
 
 class SecondViewController: UIViewController {
+    
+    var testETA = TimeInterval();
+    
+    let relativeAlarm = EKAlarm(relativeOffset: TimeInterval())
 
     override func viewDidLoad() {
         super.viewDidLoad()
