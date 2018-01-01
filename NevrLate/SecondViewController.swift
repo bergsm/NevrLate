@@ -5,26 +5,39 @@
 //  Created by Shawn Berg on 9/9/17.
 //  Copyright © 2017 Shawn Berg. All rights reserved.
 //
-
+/*
 import UIKit
 import EventKit
 
+//let eventStore = EKEventStore()
+
 class SecondViewController: UIViewController {
     
-    var testETA = TimeInterval();
+    //var testETA = TimeInterval()
+    var dateSelection = Date()
     
-    let relativeAlarm = EKAlarm(relativeOffset: TimeInterval())
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    let leaveTime = EKEvent(eventStore: eventStore)
+    
+    //let relativeAlarm = EKAlarm(relativeOffset: TimeInterval())
+    
+    @IBAction func setDate(sender: UIDatePicker){
+        dateSelection = sender.date
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func setAlarm(_ sender: UIButton){
+        
+        //var dateAlarm = EKAlarm(absoluteDate: dateSelection)
+        
+        
+        //leaveTime.startDate = dateSelection //arrival time as set by user
+        //leaveTime.addAlarm(EKAlarm(relativeOffset: -TimeInterval(ETAtime))) //alarm reminding user to leave
+        
+        /* Debugging
+        print("\(dateSelection)")
+        print("\(leaveTime.startDate)")*/
+        
     }
 
-
-}
+}*/
 

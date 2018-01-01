@@ -9,6 +9,9 @@
 import UIKit
 import MapKit
 import CoreLocation
+import EventKit
+
+let eventStore = EKEventStore()
 
 
 class FirstViewController: UIViewController, MKMapViewDelegate
@@ -16,7 +19,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate
     // Declare and initialize variables
     var request = MKDirectionsRequest()
     var directions: MKDirections!
-    var locationManager: CLLocationManager!
+    let locationManager = CLLocationManager()
     var sourceItem = MKMapItem()
     var destinationItem = MKMapItem()
     var originText = ""
@@ -25,6 +28,9 @@ class FirstViewController: UIViewController, MKMapViewDelegate
     var lon1 = CLLocationDegrees()
     var lat2 = CLLocationDegrees()
     var lon2 = CLLocationDegrees()
+    var dateSelection = Date()
+    var ETAtime = 0
+    let leaveTime = EKEvent(eventStore: eventStore)
     
     
     @IBOutlet var ETA: UILabel! // Travel time label
@@ -33,7 +39,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate
     // When changed
     @IBAction func originFieldChanged(_ textField: UITextField){
         originText = textField.text!
-        getOriginCoord() // Set origin coords
+        //getOriginCoord() // Set origin coords
         
         
         /* Debugging status messages */
@@ -46,7 +52,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate
     // When changed
     @IBAction func destinationFieldChanged(_ textField: UITextField){
         destinationText = textField.text!
-        getDestinationCoord() // Set destination coords
+        //getDestinationCoord() // Set destination coords
         
         
         /* Debugging status messages */
@@ -100,7 +106,10 @@ class FirstViewController: UIViewController, MKMapViewDelegate
         //print("\(lon2)")
         //print("Z")
         
-        // Conver Lat and Lon values to CLLocation2D Coord values
+        getOriginCoord()
+        getDestinationCoord()
+        
+        // Convert Lat and Lon values to CLLocation2D Coord values
         let originCoord = CLLocationCoordinate2DMake(lat1, lon1)
         let destinationCoord = CLLocationCoordinate2DMake(lat2, lon2)
         
@@ -109,7 +118,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate
         destinationItem = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoord, addressDictionary: nil))
         
         // User authorize location use
-        locationManager = CLLocationManager()
+        //locationManager = CLLocationManager()
         locationManager.requestWhenInUseAuthorization()
         
         // Show user location
@@ -154,7 +163,8 @@ class FirstViewController: UIViewController, MKMapViewDelegate
                 
             }else{
                 print("\(Int((etaResponse?.expectedTravelTime)!/60)) min")
-                self.ETA.text = "\(Int((etaResponse?.expectedTravelTime)!/60)) min"
+                //self.ETA.text = "\(Int((etaResponse?.expectedTravelTime)!/60)) min"
+                self.ETAtime = Int((etaResponse?.expectedTravelTime)!)
             }
             // Debug Message
             //print ("E")
@@ -184,6 +194,35 @@ class FirstViewController: UIViewController, MKMapViewDelegate
         }
 
     }
+    
+    //var testETA = TimeInterval()
+    //var dateSelection = Date()
+    
+    //let leaveTime = EKEvent(eventStore: eventStore)
+    
+    //let relativeAlarm = EKAlarm(relativeOffset: TimeInterval())
+    
+    @IBAction func setDate(sender: UIDatePicker){
+        dateSelection = sender.date
+        
+    }
+    
+    @IBAction func setAlarm(_ sender: UIButton){
+        
+        //var dateAlarm = EKAlarm(absoluteDate: dateSelection)
+        
+        
+        leaveTime.startDate = dateSelection //arrival time as set by user
+        leaveTime.addAlarm(EKAlarm(relativeOffset: -TimeInterval(ETAtime))) //alarm reminding user to leave
+        
+        // Debugging
+         print("\(dateSelection)")
+         print("\(leaveTime.startDate - TimeInterval(ETAtime))")
+        
+        
+        
+    }
+
     
     // Show map
     @IBOutlet weak var mapView: MKMapView!
